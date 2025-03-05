@@ -3,25 +3,25 @@ package Question1;
 public class CriticalTemperature {
 
     /**
-     * Determines the minimum number of measurements required to find the critical temperature.
+     * Calculates the least number of measurements needed to identify the critical temperature.
      *
      * @param k The number of identical samples of the material.
-     * @param n The number of temperature levels.
-     * @return The minimum number of measurements required.
+     * @param n The number of different temperature levels to test.
+     * @return The minimum number of measurements required to determine the critical temperature.
      */
     public static int findCriticalTemperature(int k, int n) {
-        // dp[i][j] represents the maximum number of temperature levels
-        // we can check with 'i' samples and 'j' measurements.
+        // dp[i][j] stores the maximum number of temperature levels we can test 
+        // with 'i' samples and 'j' measurements.
         int[][] dp = new int[k + 1][n + 1];
         
         int attempts = 0;
         
-        // Keep increasing attempts until we can check all 'n' levels
+        // Keep increasing the number of attempts until the number of temperature levels we can test exceeds or equals 'n'.
         while (dp[k][attempts] < n) {
             attempts++;
             for (int i = 1; i <= k; i++) {
-                // If we use a sample at this temperature and it breaks, we check below.
-                // If it doesn't break, we check above.
+                // If a sample breaks at this temperature, we check below that level.
+                // If it does not break, we check above that level.
                 dp[i][attempts] = dp[i - 1][attempts - 1] + dp[i][attempts - 1] + 1;
             }
         }
@@ -30,7 +30,7 @@ public class CriticalTemperature {
     }
 
     public static void main(String[] args) {
-        // Test cases
+        // Sample test cases
         testFindCriticalTemperature(1, 2, 2);
         testFindCriticalTemperature(2, 6, 3);
         testFindCriticalTemperature(3, 14, 4);
@@ -40,11 +40,11 @@ public class CriticalTemperature {
     }
 
     /**
-     * Test method to validate the findCriticalTemperature function.
+     * Helper method to verify the correctness of the findCriticalTemperature function.
      *
-     * @param k The number of samples.
-     * @param n The number of temperature levels.
-     * @param expected The expected result.
+     * @param k The number of available samples.
+     * @param n The number of temperature levels to test.
+     * @param expected The expected number of measurements.
      */
     private static void testFindCriticalTemperature(int k, int n, int expected) {
         int result = findCriticalTemperature(k, n);
